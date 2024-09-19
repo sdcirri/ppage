@@ -1,0 +1,32 @@
+ppage (Paper PAGEr), è una utility da riga di comando per l'impaginazione
+di testo in un formato incolonnato e giustificato (simile a quello delle
+riviste e dei giornali) secondo i parametri forniti dall'utente.
+
+Le opzioni accettate sono:
+	-i, --in FILENAME:  path del file di testo da formattare
+	-o, --out FILENAME: path del file in cui scrivere il testo formattato
+	-c, --num-col N:    numero di colonne per pagina
+	-w, --col-len N:    lunghezza colonne
+	-l, --col-lines N:  linee per colonna
+	-s, --col-space N:  numero di spazi tra le colonne
+	-f, --overwrite:    non uscire se file_out esiste, ma sovrascrivilo
+	-p, --multiplex:    esecuzione in modalità multiprocesso
+	-h, --help:         mostra un messaggio di aiuto ed esce
+
+Tutte le opzioni che forniscono i parametri per l'impaginazione sono obbligatorie,
+mentre le opzioni che modificano il comportamento del programma (-f, -h, -p) sono
+facoltative.
+L'ampiezza delle colonne (-w) deve essere pari almeno alla lunghezza
+della parola più lunga presente nel file di input (-i), altrimenti il programma
+mostrerà un messaggio di errore ed uscirà in maniera anomala.
+In caso il file di output (-o) esista già e l'opzione -f non è stata fornita, il
+programma uscirà in maniera anomala.
+
+Codici di uscita:
+	0: esecuzione normale
+	1: errore di sinossi del comando (opzioni non fornite/non valide)
+	2: errore di I/O (RAM insufficiente, file di input o di output non accessibile...)
+
+Compilazione e installazione:
+Per compilare il programma basta eseguire "make" in questa directory, per installare
+il programma è necessario eseguire "make install" come superutente.

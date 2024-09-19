@@ -1,0 +1,28 @@
+Unix
+
+Unix (registrato ufficialmente come UNIX) è un sistema operativo portabile di tipo proprietario
+per computer inizialmente sviluppato da un gruppo di ricerca dei laboratori AT&T e Bell
+Laboratories, nel quale figurarono sulle prime anche Ken Thompson e Dennis Ritchie.
+
+Storicamente, è stato il sistema operativo maggiormente utilizzato su sistemi mainframe a
+partire dagli anni settanta.
+
+
+
+
+
+Unix è stato progettato nei Bell Laboratories (AT&T Corp.). Il primo sistema operativo
+che può definirsi a tutti gli effetti come "Unix" fu sviluppato da Ken Thompson nel 1969 per
+poter eseguire un programma chiamato "Space Travel", che simulava i movimenti del Sole e dei
+pianeti, così come il movimento di una navicella spaziale che poteva atterrare in diversi luoghi.
+
+Lo sviluppo di Unix si deve in parte a un progetto precedente, Multics, abbandonato ben presto
+dalla direzione dei Bell Laboratories perché ritenuto troppo complesso.
+
+Multics nacque con presupposti molto avanzati per l'epoca: in particolare, era un sistema
+operativo in grado di supportare l'esecuzione di applicazioni in timesharing. Si scelse di
+svilupparlo internamente, dato lo scarso supporto che l'allora produttore di computer dava a
+questo aspetto. Si chiamava BESYS il sistema operativo che veniva montato di default sulle
+macchine, e si trattava più che altro di una semplice estensione dell'hardware. BESYS richiedeva
+un massiccio intervento manuale da parte degli operatori: ogni sequenza di operazioni doveva
+essere caricata dall'uomo, con grande spreco di tempo.

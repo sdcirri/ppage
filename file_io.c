@@ -36,7 +36,7 @@ void parse_line(filematr_t *fileinfo, char *line, size_t *wc, int *in_par) {
 	else {
 		if(!*in_par) {
 			++fileinfo->npars;
-			fileinfo->ptr = realloc(fileinfo->ptr, fileinfo->npars * sizeof(char*));
+			fileinfo->ptr = realloc(fileinfo->ptr, fileinfo->npars * sizeof(char**));
 			fileinfo->nwords = realloc(fileinfo->nwords, fileinfo->npars * sizeof(size_t));
 			fileinfo->ptr[fileinfo->npars - 1] = NULL;
 			*in_par = 1;
@@ -51,7 +51,6 @@ void parse_line(filematr_t *fileinfo, char *line, size_t *wc, int *in_par) {
 			if(clen > fileinfo->maxword) fileinfo->maxword = clen;								// Ricerca parola massima
 			word = strtok(NULL, " \t");											// Prossima parola
 		}
-		free(word);
 	}
 }
 
@@ -65,7 +64,7 @@ filematr_t file2matr(char *filen) {
 	 * In caso di errore il puntatore ritornato è NULL
 	 */
 
-	FILE *fp = fopen(filen, "r");												// Apro il file
+	FILE *fp = (strcmp(filen, "-") == 0) ? stdin : fopen(filen, "r");							// Apro il file ("-" = stdin)
 	if(fp == NULL) {													// Se si verifica un errore nell'apertura
 		filematr_t badret;												//   ritorno una struct con ptr NULL
 		badret.ptr = NULL;
@@ -78,14 +77,17 @@ filematr_t file2matr(char *filen) {
 		1,														//   numero di paragrafi
 		malloc(sizeof(size_t))												//   lunghezza dei diversi paragrafi
 	};
-	size_t linestot, n = 0, k = 0;
-	char *buf;
+	ret.ptr[0] = NULL;
+	ret.nwords[0] = 0;
+
+	size_t n = 0, k = 0;
+	char *buf = NULL;
 	int par = 1;														// Nuovo paragrafo
-	for(linestot = 0; getline(&buf, &n, fp) != -1; linestot++)								// Leggo la prossima riga finché non incontro EOF
+	while(getline(&buf, &n, fp) != -1)											// Leggo la prossima riga finché non incontro EOF
 		parse_line(&ret, buf, &k, &par);
 	ret.nwords[ret.npars - 1] = k;												// Conteggio parole ultimo paragrafo
 	free(buf);
-	fclose(fp);														// Chiudo il file
+	if(fp != stdin) fclose(fp);												// Chiudo il file
 	return ret;
 }
 

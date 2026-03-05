@@ -29,15 +29,15 @@ int uniplex_exec(char *file_in, char *file_out, size_t num_col,
 	}
 	free_fileinfo(&minfo);
 
-	FILE *op = fopen(file_out, "w+");							// Apro il file per la scrittura
+	FILE *op = (strcmp(file_out, "-") == 0) ? stdout : fopen(file_out, "w+");		// Apro il file per la scrittura ("-" = stdout)
 	if(op == NULL || !fprintf(op, "%s", output)) {						// Errore di apertura o scrittura
 		perror("Errore nella scrittura del file");
 		return 2;
 	}
-	fclose(op);										// Se la scrittura va a buon fine posso chiudere il file e continuare
+	if(op != stdout) fclose(op);										// Se la scrittura va a buon fine posso chiudere il file e continuare
 
 	free(output);
-	printf("Risultati scritti in %s\n", file_out);
+	if(strcmp(file_out, "-") != 0) fprintf(stderr, "Risultati scritti in %s\n", file_out);
 	return 0;
 }
 

@@ -9,12 +9,22 @@ static char *strcatmatr(char *dest, char **matr, size_t n) {
 	 * Concatena la rappresentazione di matr (n righe separate da \n) a dest
 	 * Restituisce il puntatore a dest (potrebbe cambiare a causa di realloc()
 	 */
+	if(!dest) return NULL;
+
 	for(size_t i = 0; i < n; i++) {
-		size_t len = strlen(matr[i]);
-		dest = realloc(dest, strlen(dest) + len + 2);									// Alloco spazio per la nuova riga, per \n e il terminatore
-		if(dest == NULL) return NULL;
-		strncat(dest, matr[i], len);
-		strncat(dest, "\n", 2);
+		const char *row = matr[i] ? matr[i] : "";
+		size_t rowlen = strlen(row), destlen = strlen(dest);
+
+		char *tmp = realloc(dest, destlen + rowlen + 2);								// Alloco spazio per la nuova riga, per \n e il terminatore
+		if(!tmp) {
+			free(dest);
+			return NULL;
+		}
+		dest = tmp;
+
+		memcpy(dest + destlen, row, rowlen);
+		dest[destlen + rowlen] = '\n';
+		dest[destlen + rowlen + 1] = 0;
 	}
 	return dest;
 }
@@ -121,7 +131,7 @@ char *format(filematr_t *fileinfo, size_t num_col, size_t col_len, size_t col_li
 			size_t len = pagebuf[curr_line] == NULL ? 0 : strlen(pagebuf[curr_line]),
 			       spaces = col_len + col_space;
 			pagebuf[curr_line] = realloc(pagebuf[curr_line], len + spaces + 1);
-			if(pagebuf == NULL) return NULL;
+			if(pagebuf[curr_line] == NULL) return NULL;
 			memset(pagebuf[curr_line] + len, ' ', spaces);
 			pagebuf[curr_line][len + spaces] = 0;
 
@@ -133,8 +143,9 @@ char *format(filematr_t *fileinfo, size_t num_col, size_t col_len, size_t col_li
 			++line;
 		}
 	}
-	dest = strcatmatr(dest, pagebuf, (col == 0 ? curr_line : col_lines));							// Concateno l'ultima pagina
-	for(size_t i = 0; i < curr_line; i++)											// Libero la memoria occupata dalla pagina
+	size_t used_lines = (col == 0 ? (curr_line + 1) : col_lines);
+	dest = strcatmatr(dest, pagebuf, used_lines);										// Concateno l'ultima pagina
+	for(size_t i = 0; i < used_lines; i++)											// Libero la memoria occupata dalla pagina
 		free(pagebuf[i]);
 	free(pagebuf);
 	return dest;

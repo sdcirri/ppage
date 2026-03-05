@@ -1,46 +1,26 @@
-CFLAGS=-Wall -std=c11
+CC       = clang
+CFLAGS   = -Wall -Wextra -std=c11
+RELFLAGS = -O2 -D_FORTIFY_SOURCE=3 -fstack-protector-strong -fPIE
+LDFLAGS  = -pie -Wl,-z,relro -Wl,-z,now
+DBGFLAGS = -g -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address,undefined -fsanitize=alignment,bounds,null -fno-sanitize=leak
 
-output: file_io.o formatter.o common.o uniplex_exec.o multiplex_exec.o main.o
-	$(CC) $(CFLAGS) $^ -o ppage
+SRC      = main.c file_io.c formatter.c common.c uniplex_exec.c multiplex_exec.c
+OBJ      = $(SRC:.c=.o)
+DBGOBJ   = $(SRC:.c=_dbg.o)
 
-debug: file_io_dbg.o formatter_dbg.o common_dbg.o uniplex_exec_dbg.o multiplex_exec_dbg.o main_dbg.o
-	$(CC) $(CFLAGS) -g $^ -o ppage_dbg
+.PHONY: output debug clean install
 
-main.o: main.c file_io.h
-	$(CC) $(CFLAGS) -c $<
+output: $(OBJ)
+	$(CC) $(CFLAGS) $(RELFLAGS) $^ -o ppage $(LDFLAGS)
 
-main_dbg.o: main.c file_io.h
-	$(CC) $(CFLAGS) -c -g $< -o $@
+debug: $(DBGOBJ)
+	$(CC) $(CFLAGS) $(DBGFLAGS) $^ -o ppage_dbg
 
-common.o: common.c common.h file_io.h
-	$(CC) $(CFLAGS) -c $<
+%.o: %.c
+	$(CC) $(CFLAGS) -O2 -c $< -o $@
 
-common_dbg.o: common.c common.h file_io.h
-	$(CC) $(CFLAGS) -c -g $<
-
-uniplex_exec.o: uniplex_exec.c uniplex_exec.h common.h formatter.h file_io.h
-	$(CC) $(CFLAGS) -c $<
-
-uniplex_exec_dbg.o: uniplex_exec.c uniplex_exec.h common.h formatter.h file_io.h
-	$(CC) $(CFLAGS) -c $<
-
-multiplex_exec.o: multiplex_exec.c multiplex_exec.h common.h formatter.h file_io.h
-	$(CC) $(CFLAGS) -c $<
-
-multiplex_exec_dbg.o: multiplex_exec.c multiplex_exec.h common.h formatter.h file_io.h
-	$(CC) $(CFLAGS) -c -g $<
-
-file_io.o: file_io.c file_io.h
-	$(CC) $(CFLAGS) -c $<
-
-file_io_dbg.o: file_io.c file_io.h
-	$(CC) $(CFLAGS) -c -g $< -o $@
-
-formatter.o: formatter.c formatter.h file_io.h
-	$(CC) $(CFLAGS) -c $<
-
-formatter_dbg.o: formatter.c formatter.h file_io.h
-	$(CC) $(CFLAGS) -c -g $< -o $@
+%_dbg.o: %.c
+	$(CC) $(CFLAGS) $(DBGFLAGS) -c $< -o $@
 
 install: output
 	cp -v ppage /usr/local/bin/ppage

@@ -1,4 +1,5 @@
 ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 
 # PPAGE
 ppage (Paper PAGEr), è una utility da riga di comando per l'impaginazione
@@ -6,6 +7,7 @@ di testo in un formato incolonnato e giustificato (simile a quello delle
 riviste e dei giornali) secondo i parametri forniti dall'utente.
 
 Le opzioni accettate sono:
+```
 	-i, --in FILENAME:  path del file di testo da formattare
 	-o, --out FILENAME: path del file in cui scrivere il testo formattato
 	-c, --num-col N:    numero di colonne per pagina
@@ -15,6 +17,7 @@ Le opzioni accettate sono:
 	-f, --overwrite:    non uscire se file_out esiste, ma sovrascrivilo
 	-p, --multiplex:    esecuzione in modalità multiprocesso
 	-h, --help:         mostra un messaggio di aiuto ed esce
+```
 
 Tutte le opzioni che forniscono i parametri per l'impaginazione sono obbligatorie,
 mentre le opzioni che modificano il comportamento del programma (-f, -h, -p) sono

@@ -28,11 +28,11 @@ mostrerà un messaggio di errore ed uscirà in maniera anomala.
 In caso il file di output (-o) esista già e l'opzione -f non è stata fornita, il
 programma uscirà in maniera anomala.
 
-Codici di uscita:
-	0: esecuzione normale
-	1: errore di sinossi del comando (opzioni non fornite/non valide)
-	2: errore di I/O (RAM insufficiente, file di input o di output non accessibile...)
+### Codici di uscita
+- `0`: esecuzione normale
+- `1`: errore di sinossi del comando (opzioni non fornite/non valide)
+- `2`: errore di I/O (RAM insufficiente, file di input o di output non accessibile...)
 
-Compilazione e installazione:
+### Compilazione e installazione
 Per compilare il programma basta eseguire "make" in questa directory, per installare
 il programma è necessario eseguire "make install" come superutente.

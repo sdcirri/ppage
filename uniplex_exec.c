@@ -30,7 +30,7 @@ int uniplex_exec(char *file_in, char *file_out, size_t num_col,
 	free_fileinfo(&minfo);
 
 	FILE *op = (strcmp(file_out, "-") == 0) ? stdout : fopen(file_out, "w+");		// Apro il file per la scrittura ("-" = stdout)
-	if(op == NULL || !fprintf(op, "%s", output)) {						// Errore di apertura o scrittura
+	if(op == NULL || fprintf(op, "%s", output) < 0) {					// Errore di apertura o scrittura
 		perror("Errore nella scrittura del file");
 		return 2;
 	}

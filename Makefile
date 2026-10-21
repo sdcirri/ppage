@@ -2,7 +2,7 @@ CC       = clang
 CFLAGS   = -Wall -Wextra -std=c11
 RELFLAGS = -O2 -D_FORTIFY_SOURCE=3 -fstack-protector-strong -fPIE
 LDFLAGS  = -pie -Wl,-z,relro -Wl,-z,now
-DBGFLAGS = -g -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address,undefined -fsanitize=alignment,bounds,null -fno-sanitize=leak
+DBGFLAGS = -g -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address,undefined,leak,alignment,bounds,null
 
 SRC      = main.c file_io.c formatter.c common.c uniplex_exec.c multiplex_exec.c
 OBJ      = $(SRC:.c=.o)

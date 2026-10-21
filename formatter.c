@@ -103,7 +103,7 @@ char *format(filematr_t *fileinfo, size_t num_col, size_t col_len, size_t col_li
 				line = 0, ++col;										//   passo alla colonna successiva
 			else {
 				++curr_line;
-				if(col == 0 && !(par >= fileinfo->npars - 1 && word >= fileinfo->nwords[par] - 1)) {		// Altrimenti alloco spazio per la nuova riga (se non sono arrivato alla fine)
+				if(col == 0 && !(par >= fileinfo->npars - 1 && word >= fileinfo->nwords[par])) {		// Altrimenti alloco spazio per la nuova riga (se non sono arrivato alla fine)
 					pagebuf = realloc(pagebuf, (curr_line + 1) * sizeof(char*));
 					if(pagebuf == NULL) return NULL;
 					pagebuf[curr_line] = NULL;
@@ -111,13 +111,14 @@ char *format(filematr_t *fileinfo, size_t num_col, size_t col_len, size_t col_li
 			}
 
 			if(col >= num_col && par < fileinfo->npars && word < fileinfo->nwords[par]) {				// Se a fine pagina ho ancora parole da scrivere
-				dest = strcatmatr(dest, pagebuf, curr_line + 1);						// Converto la pagina in una stringa e la concateno all'output
+				size_t page_lines = curr_line + 1;
+				dest = strcatmatr(dest, pagebuf, page_lines);							// Converto la pagina in una stringa e la concateno all'output
 				if(dest == NULL) return NULL;
 				size_t dlen = strlen(dest);
 				dest = realloc(dest, dlen + 9);									// Alloco spazio per il separatore di pagina (3 \n, 3 % e 2 spazi) + terminatore
 				if(dest == NULL) return NULL;
 				strncat(dest, "\n \%\%\% \n\n", 9);
-				for(size_t i = 0; i < curr_line; i++)								// Libero la pagina
+				for(size_t i = 0; i < page_lines; i++)								// Libero la pagina
 					free(pagebuf[i]);
 				free(pagebuf);
 				pagebuf = malloc(sizeof(char*));								// Alloco spazio per nuova pagina
@@ -143,7 +144,7 @@ char *format(filematr_t *fileinfo, size_t num_col, size_t col_len, size_t col_li
 			++line;
 		}
 	}
-	size_t used_lines = (col == 0 ? (curr_line + 1) : col_lines);
+	size_t used_lines = col == 0 ? curr_line : col_lines;
 	dest = strcatmatr(dest, pagebuf, used_lines);										// Concateno l'ultima pagina
 	for(size_t i = 0; i < used_lines; i++)											// Libero la memoria occupata dalla pagina
 		free(pagebuf[i]);

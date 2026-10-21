@@ -120,6 +120,8 @@ int multiplex_exec(char *file_in, char *file_out, size_t num_col,
 			char *output = format(minfo, num_col, col_len, col_lines, col_space);	// Formatto la pagina
 			if(output == NULL) {							// Errore di allocazione
 				perror("Errore nell'allocazione della memoria");
+				free_fileinfo(minfo);
+				free(minfo);
 				return 2;
 			}
 			free_fileinfo(minfo);

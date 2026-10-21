@@ -46,7 +46,7 @@ char *format(filematr_t *fileinfo, size_t num_col, size_t col_len, size_t col_li
 	pagebuf[0] = NULL, dest[0] = 0;
 
 	size_t word = 0, par, lcontent, nwords;
-	size_t page = 0, col = 0, line = 0, curr_line;
+	size_t page = 0, col = 0, line = 0, curr_line = 0;
 	size_t *words;														// Buffer per indici di parole
 
 	for(par = 0; par < fileinfo->npars; par++) {										// Scansione paragrafi

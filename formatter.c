@@ -110,7 +110,7 @@ char *format(filematr_t *fileinfo, size_t num_col, size_t col_len, size_t col_li
 				}
 			}
 
-			if(col >= num_col && par < fileinfo->npars && word < fileinfo->nwords[par]) {				// Se a fine pagina ho ancora parole da scrivere
+			if(col >= num_col && (word < fileinfo->nwords[par] || par + 1 < fileinfo->npars)) {			// Se a fine pagina ho ancora parole da scrivere
 				size_t page_lines = curr_line + 1;
 				dest = strcatmatr(dest, pagebuf, page_lines);							// Converto la pagina in una stringa e la concateno all'output
 				if(dest == NULL) return NULL;

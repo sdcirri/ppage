@@ -121,7 +121,7 @@ int multiplex_exec(char *file_in, char *file_out, size_t num_col,
 				fprintf(stderr, "Errore: le colonne sono troppo corte\n");
 				free_fileinfo(minfo);
 				free(minfo);
-				return 2;
+				return 1;
 			}
 
 			char *output = format(minfo, num_col, col_len, col_lines, col_space);	// Formatto la pagina
